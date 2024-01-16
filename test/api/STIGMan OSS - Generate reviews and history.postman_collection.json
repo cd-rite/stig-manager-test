@@ -1,0 +1,459 @@
+{
+	"info": {
+		"_postman_id": "f9ded2c9-5df2-491d-8c4e-638742d8fa45",
+		"name": "STIGMan OSS - Generate reviews and history",
+		"description": "An API for managing evaluations of Security Technical Implementation Guide (STIG) assessments.\n\nContact Support:\n Name: Carl Smigielski\n Email: carl.a.smigielski@saic.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9301046"
+	},
+	"item": [
+		{
+			"name": "Run me 10x",
+			"item": [
+				{
+					"name": "POST batch review: target stig, whole stig Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let user = pm.environment.get(\"user\");\r",
+									"let userId = pm.environment.get(\"userId\");\r",
+									"console.log(\"user: \" + user);\r",
+									"console.log(\"userId: \" + userId)\r",
+									"\r",
+									"if (pm.request.url.getQueryString().match(/elevate=true/)) {\r",
+									"    user = \"elevated\";\r",
+									"    console.log(\"setting user to 'elevated'\");\r",
+									"}\r",
+									"\r",
+									"if ( user == \"collectioncreator\" ) { //placeholder for \"users\" that should fail\r",
+									"    pm.test(\"Status should be is 403 for collectioncreator\", function () {\r",
+									"        pm.response.to.have.status(403);\r",
+									"    });\r",
+									"    return;\r",
+									"}\r",
+									"else {\r",
+									"    pm.test(\"Status code is 200 for all users but collectioncreator\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"    });\r",
+									"}\r",
+									"if (pm.response.code !== 200) {\r",
+									"    return;\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let batchSourceReview =\r",
+									"{\r",
+									"    \"source\":{\r",
+									"        \"review\":\r",
+									"            {\r",
+									"                \"result\":\"fail\",\r",
+									"                \"detail\":\"{{$randomNoun}}-{{$randomJobType}}\"\r",
+									"            }\r",
+									"       \r",
+									"    },\r",
+									"    \"assets\":{\r",
+									"        \"benchmarkIds\":[\"MS_Windows_10_STIG\"]\r",
+									"    },\r",
+									"    \"rules\":\r",
+									"        {\r",
+									"        \"benchmarkIds\":[\"MS_Windows_10_STIG\"]\r",
+									"        }\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"batchSourceReview\", JSON.stringify(batchSourceReview));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{batchSourceReview}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/collections/:collectionId/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collections",
+								":collectionId",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "projection",
+									"value": "history",
+									"description": "Additional properties to include in the response.\n",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "collectionId",
+									"value": "11",
+									"description": "(Required) A path parameter that indentifies a Collection"
+								}
+							]
+						},
+						"description": "Create a new Review, or update all properties of an existing Review, setting missing properties to null"
+					},
+					"response": []
+				},
+				{
+					"name": "POST batch review: target stig, whole stig Copy 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let user = pm.environment.get(\"user\");\r",
+									"let userId = pm.environment.get(\"userId\");\r",
+									"console.log(\"user: \" + user);\r",
+									"console.log(\"userId: \" + userId)\r",
+									"\r",
+									"if (pm.request.url.getQueryString().match(/elevate=true/)) {\r",
+									"    user = \"elevated\";\r",
+									"    console.log(\"setting user to 'elevated'\");\r",
+									"}\r",
+									"\r",
+									"if ( user == \"collectioncreator\" ) { //placeholder for \"users\" that should fail\r",
+									"    pm.test(\"Status should be is 403 for collectioncreator\", function () {\r",
+									"        pm.response.to.have.status(403);\r",
+									"    });\r",
+									"    return;\r",
+									"}\r",
+									"else {\r",
+									"    pm.test(\"Status code is 200 for all users but collectioncreator\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"    });\r",
+									"}\r",
+									"if (pm.response.code !== 200) {\r",
+									"    return;\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let batchSourceReview =\r",
+									"{\r",
+									"    \"source\":{\r",
+									"        \"review\":\r",
+									"            {\r",
+									"                \"result\":\"fail\",\r",
+									"                \"detail\":\"{{$randomNoun}}-{{$randomJobType}}\"\r",
+									"            }\r",
+									"       \r",
+									"    },\r",
+									"    \"assets\":{\r",
+									"        \"benchmarkIds\":[\"RHEL_7_STIG\"]\r",
+									"    },\r",
+									"    \"rules\":\r",
+									"        {\r",
+									"        \"benchmarkIds\":[\"RHEL_7_STIG\"]\r",
+									"        }\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"batchSourceReview\", JSON.stringify(batchSourceReview));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{batchSourceReview}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/collections/:collectionId/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collections",
+								":collectionId",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "projection",
+									"value": "history",
+									"description": "Additional properties to include in the response.\n",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "collectionId",
+									"value": "11",
+									"description": "(Required) A path parameter that indentifies a Collection"
+								}
+							]
+						},
+						"description": "Create a new Review, or update all properties of an existing Review, setting missing properties to null"
+					},
+					"response": []
+				},
+				{
+					"name": "POST batch review: target stig, whole stig Copy 3",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let user = pm.environment.get(\"user\");\r",
+									"let userId = pm.environment.get(\"userId\");\r",
+									"console.log(\"user: \" + user);\r",
+									"console.log(\"userId: \" + userId)\r",
+									"\r",
+									"if (pm.request.url.getQueryString().match(/elevate=true/)) {\r",
+									"    user = \"elevated\";\r",
+									"    console.log(\"setting user to 'elevated'\");\r",
+									"}\r",
+									"\r",
+									"if ( user == \"collectioncreator\" ) { //placeholder for \"users\" that should fail\r",
+									"    pm.test(\"Status should be is 403 for collectioncreator\", function () {\r",
+									"        pm.response.to.have.status(403);\r",
+									"    });\r",
+									"    return;\r",
+									"}\r",
+									"else {\r",
+									"    pm.test(\"Status code is 200 for all users but collectioncreator\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"    });\r",
+									"}\r",
+									"if (pm.response.code !== 200) {\r",
+									"    return;\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let batchSourceReview =\r",
+									"{\r",
+									"    \"source\":{\r",
+									"        \"review\":\r",
+									"            {\r",
+									"                \"result\":\"fail\",\r",
+									"                \"detail\":\"{{$randomNoun}}-{{$randomJobType}}\"\r",
+									"            }\r",
+									"       \r",
+									"    },\r",
+									"    \"assets\":{\r",
+									"        \"benchmarkIds\":[\"RHEL_8_STIG\"]\r",
+									"    },\r",
+									"    \"rules\":\r",
+									"        {\r",
+									"        \"benchmarkIds\":[\"RHEL_8_STIG\"]\r",
+									"        }\r",
+									"}\r",
+									"\r",
+									"pm.environment.set(\"batchSourceReview\", JSON.stringify(batchSourceReview));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{{batchSourceReview}}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/collections/:collectionId/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collections",
+								":collectionId",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "projection",
+									"value": "history",
+									"description": "Additional properties to include in the response.\n",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "collectionId",
+									"value": "11",
+									"description": "(Required) A path parameter that indentifies a Collection"
+								}
+							]
+						},
+						"description": "Create a new Review, or update all properties of an existing Review, setting missing properties to null"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJGSjg2R2NGM2pUYk5MT2NvNE52WmtVQ0lVbWZZQ3FvcXRPUWVNZmJoTmxFIn0.eyJleHAiOjE4NjQ2ODEwMzUsImlhdCI6MTY3MDU0MDIzNiwiYXV0aF90aW1lIjoxNjcwNTQwMjM1LCJqdGkiOiI0N2Y5YWE3ZC1iYWM0LTQwOTgtOWJlOC1hY2U3NTUxM2FhN2YiLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwODAvYXV0aC9yZWFsbXMvc3RpZ21hbiIsImF1ZCI6WyJyZWFsbS1tYW5hZ2VtZW50IiwiYWNjb3VudCJdLCJzdWIiOiJiN2M3OGE2Mi1iODRmLTQ1NzgtYTk4My0yZWJjNjZmZDllZmUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJzdGlnLW1hbmFnZXIiLCJub25jZSI6IjMzNzhkYWZmLTA0MDQtNDNiMy1iNGFiLWVlMzFmZjczNDBhYyIsInNlc3Npb25fc3RhdGUiOiI4NzM2NWIzMy0yYzc2LTRiM2MtODQ4NS1mYmE1ZGJmZjRiOWYiLCJhY3IiOiIwIiwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImNyZWF0ZV9jb2xsZWN0aW9uIiwiZGVmYXVsdC1yb2xlcy1zdGlnbWFuIiwiYWRtaW4iXX0sInJlc291cmNlX2FjY2VzcyI6eyJyZWFsbS1tYW5hZ2VtZW50Ijp7InJvbGVzIjpbInZpZXctdXNlcnMiLCJxdWVyeS1ncm91cHMiLCJxdWVyeS11c2VycyJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgc3RpZy1tYW5hZ2VyOmNvbGxlY3Rpb24gc3RpZy1tYW5hZ2VyOnN0aWc6cmVhZCBzdGlnLW1hbmFnZXI6dXNlcjpyZWFkIHN0aWctbWFuYWdlcjpvcCBzdGlnLW1hbmFnZXI6Y29sbGVjdGlvbjpyZWFkIHN0aWctbWFuYWdlcjpvcDpyZWFkIHN0aWctbWFuYWdlcjp1c2VyIHN0aWctbWFuYWdlciBzdGlnLW1hbmFnZXI6c3RpZyIsInNpZCI6Ijg3MzY1YjMzLTJjNzYtNGIzYy04NDg1LWZiYTVkYmZmNGI5ZiIsIm5hbWUiOiJTVElHTUFOIEFkbWluIiwicHJlZmVycmVkX3VzZXJuYW1lIjoic3RpZ21hbmFkbWluIiwiZ2l2ZW5fbmFtZSI6IlNUSUdNQU4iLCJmYW1pbHlfbmFtZSI6IkFkbWluIn0.a1XwJZw_FIzwMXKo-Dr-n11me5ut-SF9ni7ylX-7t7AVrH1eAqyBxX9DXaxFK0xs6YOhoPsh9NyW8UFVaYgtF68Ps6yzoiqFEeiRXkpN5ygICN3H3z6r-YwanLlEeaYR3P2EtHRcrBtCnt0VEKKbGPWOfeiNCVe3etlp9-NQo44",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// pm.environment.set(\"curUser\", \"staff\");",
+					"",
+					"let user = pm.iterationData.get(\"user\");",
+					"let elevate = pm.iterationData.get(\"elevate\");",
+					"console.log(`user: ${user} elevate: ${elevate}`);",
+					"",
+					"",
+					"//default to stigmanadmin user, elevated, if not iterating, and user is not in env",
+					"if (user === undefined) {",
+					"    user = \"stigmanadmin\";",
+					"    userId = \"1\";",
+					"    elevate = true;",
+					"    pm.environment.set(\"user\", user);",
+					"    pm.environment.set(\"elevated\", elevate);",
+					"    let token = pm.environment.get(\"token.\" + user)",
+					"    pm.environment.set(\"token\", token);",
+					"    console.log(`No iteration data. Setting: User: ${user} elevated: ${elevate} Bearer: ${token}`);",
+					"",
+					"    return;  // Just use whatever settings are currently left in the env.",
+					"}",
+					"",
+					"",
+					"",
+					"let token = pm.iterationData.get(\"token\");",
+					"pm.environment.set(\"token.\"+ user, token);",
+					"pm.environment.set(\"token\", token);",
+					"pm.environment.set(\"user\", user);",
+					"pm.environment.set(\"elevated\", elevate);",
+					"console.log(`User: ${user} elevated: ${elevate} Bearer: ${token}`);",
+					"",
+					"//constructed data targets to test",
+					"pm.environment.set(\"stigs.valid\", pm.iterationData.get(\"stigs.valid\"));",
+					"pm.environment.set(\"testCollection\", pm.iterationData.get(\"testCollection\"));",
+					"pm.environment.set(\"testBenchmark\", pm.iterationData.get(\"testBenchmark\"));",
+					"pm.environment.set(\"testRev\", pm.iterationData.get(\"testRev\"));",
+					"pm.environment.set(\"testAsset\", pm.iterationData.get(\"testAsset\"));",
+					"pm.environment.set(\"testAsset-NoStigs\", pm.iterationData.get(\"testAsset-NoStigs\"));",
+					"pm.environment.set(\"testAssetName\", pm.iterationData.get(\"testAssetName\"));",
+					"pm.environment.set(\"testRuleId\", pm.iterationData.get(\"testRuleId\"));",
+					"pm.environment.set(\"testUserId\", pm.iterationData.get(\"testUserId\"));",
+					"pm.environment.set(\"userId\", pm.iterationData.get(\"userId\"));",
+					"pm.environment.set(\"metadataKey\", pm.iterationData.get(\"metadataKey\"));",
+					"pm.environment.set(\"metadataValue\", pm.iterationData.get(\"metadataValue\"));",
+					"// pm.environment.set(\"targetCollectionName\", pm.iterationData.get(\"targetCollectionName\"));",
+					"pm.environment.set(\"checklistLength\", pm.iterationData.get(\"checklistLength\"));",
+					"",
+					"//targets for data changes",
+					"pm.environment.set(\"deleteAsset\", pm.iterationData.get(\"deleteAsset\"));",
+					"pm.environment.set(\"scrapAsset\", pm.iterationData.get(\"scrapAsset\"));",
+					"pm.environment.set(\"deleteCollection\", pm.iterationData.get(\"deleteCollection\"));",
+					"pm.environment.set(\"scrapCollection\", pm.iterationData.get(\"scrapCollection\"));",
+					"",
+					"",
+					"//regex strings",
+					"pm.environment.set(\"collectionMatchString\", pm.iterationData.get(\"collectionMatchString\"));",
+					"pm.environment.set(\"collectionMatchType\", pm.iterationData.get(\"collectionMatchType\"));",
+					"pm.environment.set(\"assetMatchString\", pm.iterationData.get(\"assetMatchString\"));",
+					"pm.environment.set(\"reviewMatchString\", pm.iterationData.get(\"reviewMatchString\"));",
+					"",
+					"//misc",
+					"pm.environment.set(\"accessLevel\", pm.iterationData.get(\"accessLevel\"));",
+					"",
+					"// utils = {",
+					"//     grantsPostToGet: function (grantsRespArray) {",
+					"//     }",
+					"// }",
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// var user = pm.environment.get(\"user\");",
+					"// var elevated = pm.environment.get(\"elevated\");",
+					"",
+					"// pm.test(`Collections Tests with user: ${user} elevated: ${elevated} `, function () {",
+					"//     pm.expect(pm.environment.get(\"user\")).to.equal(user);",
+					"// });",
+					"",
+					"",
+					"let user = pm.environment.get(\"user\");",
+					"let elevated = pm.environment.get(\"elevated\");",
+					"",
+					"pm.test(`user: ${user}, elevate variable (not always used): ${elevated}`, function () {",
+					"    pm.expect(1).to.equal(1);",
+					"});",
+					"",
+					"let env = pm.environment.get(\"env\");",
+					"pm.test(`environment: ${env}`, function () {",
+					"    pm.expect(env).to.equal(\"STIGMan Env\");",
+					"});",
+					"",
+					"",
+					"",
+					""
+				]
+			}
+		}
+	]
+}

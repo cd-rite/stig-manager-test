@@ -1,0 +1,10 @@
+**/node_modules
+**/state.json
+**/README.md
+**/.git
+**/.gitignore
+**/data
+**/test
+**/uploads
+**/docker
+!client/**/node_modules
